@@ -14,8 +14,8 @@ import zjt.learn.statemachine.base.BaseState;
 import zjt.learn.statemachine.base.listener.CommonDealEventListener;
 import zjt.learn.statemachine.depositorder.DepositOrderEvent;
 import zjt.learn.statemachine.depositorder.DepositOrderStatus;
-import zjt.learn.statemachine.depositorder.action.DepositAction01;
-import zjt.learn.statemachine.depositorder.action.DepositAction02;
+import zjt.learn.statemachine.depositorder.action.DepositPayAction;
+import zjt.learn.statemachine.depositorder.action.DepositDeliveryAction;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -53,13 +53,13 @@ public class DepositOrderStateMachineFactoryConfig extends StateMachineConfigure
      * 流程特有的action
      */
     @Autowired
-    private DepositAction01 depositAction01;
+    private DepositPayAction depositPayAction;
 
     /**
      * 流程特有的action
      */
     @Autowired
-    private DepositAction02 depositAction02;
+    private DepositDeliveryAction depositDeliveryAction;
 
 
     /**
@@ -96,11 +96,17 @@ public class DepositOrderStateMachineFactoryConfig extends StateMachineConfigure
     @Override
     public void configure(StateMachineTransitionConfigurer<BaseState, BaseEvent> transitions) throws Exception {
         transitions
-                .withExternal().source(DepositOrderStatus.WAIT_PAYMENT_DEPOSIT).target(DepositOrderStatus.WAIT_DELIVER_DEPOSIT).event(DepositOrderEvent.PAYED_DEPOSIT)
-                .action(depositAction01)
-                .and()
-                .withExternal().source(DepositOrderStatus.WAIT_DELIVER_DEPOSIT).target(DepositOrderStatus.WAIT_RECEIVE_DEPOSIT).event(DepositOrderEvent.DELIVERY_DEPOSIT)
-                .action(depositAction02)
+                .withExternal()
+                .source(DepositOrderStatus.WAIT_PAYMENT_DEPOSIT).target(DepositOrderStatus.WAIT_DELIVER_DEPOSIT)
+                .event(DepositOrderEvent.PAYED_DEPOSIT).action(depositPayAction)
+
+                .and().withExternal()
+                .source(DepositOrderStatus.WAIT_DELIVER_DEPOSIT).target(DepositOrderStatus.WAIT_RECEIVE_DEPOSIT)
+                .event(DepositOrderEvent.DELIVERY_DEPOSIT).action(depositDeliveryAction)
+
+                .and().withExternal()
+                .source(DepositOrderStatus.WAIT_RECEIVE_DEPOSIT).target(DepositOrderStatus.FINISH_DEPOSIT)
+                .event(DepositOrderEvent.RECEIVED_DEPOSIT).action(depositDeliveryAction)
         ;
 
 

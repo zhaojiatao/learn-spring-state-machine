@@ -8,4 +8,35 @@ package zjt.learn.service;
  * @ClassName: IOrderService
  */
 public interface IOrderService {
+    /**
+     * 下单
+     * @param orderNo
+     * @param orderType
+     * @return
+     */
+    Long makeOrder(String orderNo,Integer orderType);
+
+    /**
+     * 支付
+     * @param orderId
+     */
+    void payOrder(Long orderId);
+
+    /**
+     * 发货
+     * @param orderId
+     */
+    void delivery(Long orderId);
+
+    /**
+     * 收货
+     * @param orderId
+     */
+    void received(Long orderId);
+
+    /**
+     * 关单
+     * @param orderId
+     */
+    void closeOrder(Long orderId);
 }

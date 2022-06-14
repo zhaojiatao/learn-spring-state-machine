@@ -7,6 +7,7 @@ import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.support.DefaultExtendedState;
 import org.springframework.statemachine.support.DefaultStateMachineContext;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import zjt.learn.enums.OrderTypeEnum;
 import zjt.learn.repository.dataobj.OrderInfoDO;
 import zjt.learn.repository.mapper.OrderInfoMapper;
@@ -30,6 +31,7 @@ public class CommonStateMachinePersist implements StateMachinePersist<BaseState,
      * @param contextObj
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void write(StateMachineContext<BaseState, BaseEvent> context, String contextObj) {
         Long orderId = Long.valueOf(contextObj);
         OrderInfoDO orderInfoDO = orderInfoMapper.selectById(orderId);

@@ -16,11 +16,11 @@ import zjt.learn.statemachine.base.event.BasicOrderEvent;
  */
 @Slf4j
 @Component
-public class DepositAction02 extends AbstractOrderAction {
+public class DepositDeliveryAction extends AbstractOrderAction {
     @Override
     protected void doAction(BasicOrderEvent<BaseEvent> event, BaseState source, BaseState target) {
         Long orderId = event.getOrderId();
-        log.info("DepositAction02 do something，orderId={}",orderId);
+        log.info("★★★★★★★ DepositDeliveryAction do something，orderId={} ★★★★★★★",orderId);
         //TODO do something...
     }
 }

@@ -12,20 +12,19 @@ import zjt.learn.statemachine.base.event.BasicOrderEvent;
  * 功能：
  *
  * @Author: zhaojiatao
- * @Date: 2021/11/7 21:37
- * @ClassName: PushSapAction
- * @Version: 1.0.0
+ * @Date: 2022/6/14 22:06
+ * @ClassName: CloseOrderAction
  */
 @Slf4j
 @Component
-public class SimpleOrderAction01 extends AbstractOrderAction {
+public class SimpleCloseOrderAction extends AbstractOrderAction {
     @Override
     protected void doAction(BasicOrderEvent<BaseEvent> event, BaseState source, BaseState target) {
         Long orderId = event.getOrderId();
-        log.info("★★★★★★★ SimpleOrderAction01，orderId={} ★★★★★★★",orderId);
-        //TODO do something...
+        log.info("★★★★★★★ CloseOrderAction，orderId={} ★★★★★★★",orderId);
         if (TransactionSynchronizationManager.isActualTransactionActive()){
             log.info("存在事务");
         }
+        //TODO do something...
     }
 }

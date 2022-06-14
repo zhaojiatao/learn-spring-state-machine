@@ -10,6 +10,7 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.service.StateMachineService;
 import org.springframework.statemachine.support.StateMachineInterceptorAdapter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import zjt.learn.enums.OrderTypeEnum;
 import zjt.learn.repository.dataobj.OrderInfoDO;
@@ -57,6 +58,7 @@ public class OrderEventBusImpl implements IOrderEventBus {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void submitEvent(BasicOrderEvent<? extends BaseEvent> orderEvent) {
         Long orderId = orderEvent.getOrderId();
         Assert.notNull(orderId, "orderId不能为空");
@@ -82,7 +84,7 @@ public class OrderEventBusImpl implements IOrderEventBus {
             }
         } catch (Exception e) {
             log.error("订单{}状态机处理异常.", orderId, e);
-            throw new RuntimeException("LOAN_SECOND_CAR_SYSTEM_EXCEPTION");
+            throw new RuntimeException("SYSTEM_EXCEPTION");
         } finally {
             stateMachineService.releaseStateMachine(orderId.toString(), true);
         }

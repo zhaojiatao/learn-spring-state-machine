@@ -14,8 +14,7 @@ import zjt.learn.statemachine.base.BaseState;
 import zjt.learn.statemachine.base.listener.CommonDealEventListener;
 import zjt.learn.statemachine.simpleorder.SimpleOrderEvent;
 import zjt.learn.statemachine.simpleorder.SimpleOrderStatus;
-import zjt.learn.statemachine.simpleorder.action.SimpleOrderAction01;
-import zjt.learn.statemachine.simpleorder.action.SimpleOrderAction02;
+import zjt.learn.statemachine.simpleorder.action.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -45,9 +44,20 @@ public class SimpleOrderStateMachineFactoryConfig extends StateMachineConfigurer
 
     @Autowired
     private SimpleOrderAction01 simpleOrderAction01;
-
     @Autowired
     private SimpleOrderAction02 simpleOrderAction02;
+
+    @Autowired
+    private SimpleOrderPayAction simpleOrderPayAction;
+
+    @Autowired
+    private SimpleOrderDeliveryAction simpleOrderDeliveryAction;
+
+    @Autowired
+    private SimpleOrderReceiveAction simpleOrderReceiveAction;
+
+    @Autowired
+    private SimpleCloseOrderAction simpleCloseOrderAction;
 
 
     @Override
@@ -67,16 +77,34 @@ public class SimpleOrderStateMachineFactoryConfig extends StateMachineConfigurer
 
     @Override
     public void configure(StateMachineTransitionConfigurer<BaseState, BaseEvent> transitions) throws Exception {
-        transitions
-                .withExternal().source(SimpleOrderStatus.WAIT_PAYMENT).target(SimpleOrderStatus.WAIT_DELIVER)
+        transitions.withExternal()
+                //待付款->待发货
+                .source(SimpleOrderStatus.WAIT_PAYMENT).target(SimpleOrderStatus.WAIT_DELIVER)
                 .event(SimpleOrderEvent.PAYED)
-                .action(simpleOrderAction01)
+                .action(simpleOrderPayAction).action(simpleOrderAction01)//可以配置多个action
+                .and().withExternal()
+                //待付款->订单关闭
+                .source(SimpleOrderStatus.WAIT_PAYMENT).target(SimpleOrderStatus.CLOSED)
+                .event(SimpleOrderEvent.CLOSE).action(simpleCloseOrderAction)
 
-                .and()
-
-                .withExternal().source(SimpleOrderStatus.WAIT_DELIVER).target(SimpleOrderStatus.WAIT_RECEIVE)
+                .and().withExternal()
+                //待发货->待收货
+                .source(SimpleOrderStatus.WAIT_DELIVER).target(SimpleOrderStatus.WAIT_RECEIVE)
                 .event(SimpleOrderEvent.DELIVERY)
-                .action(simpleOrderAction02)
+                .action(simpleOrderDeliveryAction).action(simpleOrderAction02)
+                .and().withExternal()
+                //待发货->订单关闭
+                .source(SimpleOrderStatus.WAIT_DELIVER).target(SimpleOrderStatus.CLOSED)
+                .event(SimpleOrderEvent.CLOSE).action(simpleCloseOrderAction)
+
+                .and().withExternal()
+                //待收货->订单完成
+                .source(SimpleOrderStatus.WAIT_RECEIVE).target(SimpleOrderStatus.FINISH)
+                .event(SimpleOrderEvent.RECEIVED).action(simpleOrderReceiveAction)
+                .and().withExternal()
+                //待收货->订单关闭
+                .source(SimpleOrderStatus.WAIT_RECEIVE).target(SimpleOrderStatus.CLOSED)
+                .event(SimpleOrderEvent.CLOSE).action(simpleCloseOrderAction)
         ;
 
 

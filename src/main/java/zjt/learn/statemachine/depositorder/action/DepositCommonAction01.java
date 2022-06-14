@@ -20,7 +20,7 @@ public class DepositCommonAction01 extends AbstractOrderAction {
     @Override
     protected void doAction(BasicOrderEvent<BaseEvent> event, BaseState source, BaseState target) {
         Long orderId = event.getOrderId();
-        log.info("DepositCommonAction01 do something，orderId={}",orderId);
+        log.info("★★★★★★★ DepositCommonAction01 do something，orderId={} ★★★★★★★",orderId);
         //TODO do something...
     }
 }

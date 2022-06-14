@@ -25,5 +25,10 @@ public enum SimpleOrderEvent implements BaseEvent {
      */
     RECEIVED,
 
+    /**
+     * 关单
+     */
+    CLOSE,
+
     ;
 }

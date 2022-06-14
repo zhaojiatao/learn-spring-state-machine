@@ -12,6 +12,21 @@ import zjt.learn.statemachine.base.BaseEvent;
  * @Version: 1.0.0
  */
 public enum DepositOrderEvent implements BaseEvent {
-    // 支付，发货，确认收货
-    PAYED_DEPOSIT, DELIVERY_DEPOSIT, RECEIVED_DEPOSIT;
+    /**
+     * 支付
+     */
+    PAYED_DEPOSIT,
+    /**
+     * 发货
+     */
+    DELIVERY_DEPOSIT,
+    /**
+     * 确认收货
+     */
+    RECEIVED_DEPOSIT,
+    /**
+     * 关单
+     */
+    CLOSE_DEPOSIT,
+    ;
 }

@@ -18,11 +18,11 @@ import zjt.learn.statemachine.base.event.BasicOrderEvent;
  */
 @Slf4j
 @Component
-public class SimpleOrderAction01 extends AbstractOrderAction {
+public class SimpleOrderDeliveryAction extends AbstractOrderAction {
     @Override
     protected void doAction(BasicOrderEvent<BaseEvent> event, BaseState source, BaseState target) {
         Long orderId = event.getOrderId();
-        log.info("★★★★★★★ SimpleOrderAction01，orderId={} ★★★★★★★",orderId);
+        log.info("★★★★★★★ SimpleOrderDeliveryAction，orderId={} ★★★★★★★",orderId);
         //TODO do something...
         if (TransactionSynchronizationManager.isActualTransactionActive()){
             log.info("存在事务");

@@ -17,7 +17,8 @@ public enum SimpleOrderStatus implements BaseState {
     WAIT_PAYMENT(1,"待支付"),
     WAIT_DELIVER(2,"待发货"),
     WAIT_RECEIVE(3,"待收货"),
-    FINISH(4,"订单结束"),
+    FINISH(4,"订单完成"),
+    CLOSED(-1,"订单关闭"),
     ;
 
     @Getter
