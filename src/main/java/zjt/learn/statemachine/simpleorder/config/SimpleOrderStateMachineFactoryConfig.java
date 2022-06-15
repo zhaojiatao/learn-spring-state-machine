@@ -60,6 +60,12 @@ public class SimpleOrderStateMachineFactoryConfig extends StateMachineConfigurer
     private SimpleCloseOrderAction simpleCloseOrderAction;
 
 
+    /**
+     * 配置监听器simpleOrderEventListener，其中定义了simpleCommonAction01...，每一次状态流转都会触发，适合编写一些通用的必须逻辑，如写日志等。
+     * 配置状态机持久化器commonStateMachineRuntimePersister，其内部依靠CommonStateMachinePersist来实现状态的读写。
+     * @param config
+     * @throws Exception
+     */
     @Override
     public void configure(StateMachineConfigurationConfigurer<BaseState, BaseEvent> config) throws Exception {
         config.withConfiguration().listener(simpleOrderEventListener)
@@ -67,6 +73,11 @@ public class SimpleOrderStateMachineFactoryConfig extends StateMachineConfigurer
                 .withPersistence().runtimePersister(commonStateMachineRuntimePersister);
     }
 
+    /**
+     * 配置状态机流程所有状态
+     * @param states
+     * @throws Exception
+     */
     @Override
     public void configure(StateMachineStateConfigurer<BaseState, BaseEvent> states) throws Exception {
         Set<BaseState> statusSet = new HashSet<>();
@@ -75,6 +86,12 @@ public class SimpleOrderStateMachineFactoryConfig extends StateMachineConfigurer
     }
 
 
+    /**
+     * 配置流程跳转过程中的 transition
+     * A->B 触发action
+     * @param transitions
+     * @throws Exception
+     */
     @Override
     public void configure(StateMachineTransitionConfigurer<BaseState, BaseEvent> transitions) throws Exception {
         transitions.withExternal()
