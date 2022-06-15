@@ -26,6 +26,5 @@ public class SimpleCommonAction01 extends AbstractOrderAction {
         if (TransactionSynchronizationManager.isActualTransactionActive()){
             log.info("存在事务");
         }
-        throw new RuntimeException("手动抛出");
     }
 }
